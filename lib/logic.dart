@@ -1,43 +1,59 @@
 import 'package:soko_number/main.dart';
 import 'package:soko_number/structure.dart';
+import 'dart:collection';
 
 class Logic {
-  List<Structure> nodes = [];
+  List<Structure> stack = [];
+  Queue<Structure> queue = Queue<Structure>();
+
 
   Structure userPlay(Structure s, Positions p) {
     return s.move(p);
   }
 
-  void dfs(Structure s) {
-    if (nodes.isEmpty) {
-      nodes.add(s);
+  bool dfs(Structure s) {
+    if (stack.isEmpty) {
+      stack.add(s);
     } else {
-      for (var st in nodes) {
+      for (var st in stack) {
         if (s.equals(st)) {
-          return ;
+          return false;
         }
       }
-      nodes.add(s);
+      stack.add(s);
     }
-    Structure su = s.move(Positions.up);
-    dfs(su);
-    Structure sd = s.move(Positions.down);
-    dfs(sd);
-    Structure sr = s.move(Positions.right);
-    dfs(sr);
-    Structure sl = s.move(Positions.left);
-    dfs(sl);
-    if(s.isFinal()){
+    if (s.isFinal()) {
       print('DONE');
-      for(var ss in nodes){
-        ss.printB();
+      print('steps: ${stack.length - 1}');
+      return true;
+    } else {
+      for (var st in s.getNextStates()) {
+        if (dfs(st)) {
+          return true;
+        }
       }
-    }else{
-      nodes.remove(s);
+      stack.removeLast();
+      return false;
     }
   }
 
-  void bfs(Structure s) {}
+  void bfs(Structure s) {
+    if (queue.isEmpty) {
+      queue.addFirst(s);
+    }
+    while (queue.isNotEmpty) {
+      if (queue.first.isFinal()) {
+        print('DONE');
+        print('steps: ........................');
+        break;
+      } else {
+        for (var st in queue.first.getNextStates()) {
+          queue.addLast(st);
+        }
+        queue.removeFirst();
+      }
+    }
+  }
 
   void ucs(Structure s) {}
 

@@ -29,6 +29,8 @@ Structure level1() {
 
   s = Structure(width: w, height: h, board: b, playBoxes: p);
 
+  s.parent = s;
+
   return s;
 }
 
@@ -62,6 +64,8 @@ Structure level2() {
 
   s = Structure(width: w, height: h, board: b, playBoxes: p);
 
+  s.parent = s;
+
   return s;
 }
 
@@ -91,6 +95,8 @@ Structure level3() {
   var p = [p1, p2];
 
   s = Structure(width: w, height: h, board: b, playBoxes: p);
+
+  s.parent = s;
 
   return s;
 }
@@ -128,6 +134,7 @@ Structure level4() {
   var p = [p1, p2, p3];
 
   s = Structure(width: w, height: h, board: b, playBoxes: p);
+  s.parent = s;
   return s;
 }
 
@@ -166,7 +173,7 @@ Structure level5() {
   var p = [p1, p2, p3, p4];
 
   s = Structure(width: w, height: h, board: b, playBoxes: p);
-
+  s.parent = s;
   return s;
 }
 
@@ -201,6 +208,7 @@ Structure level6() {
   var p = [p1, p2, p3, p4, p5];
 
   s = Structure(width: w, height: h, board: b, playBoxes: p);
+  s.parent = s;
   return s;
 }
 

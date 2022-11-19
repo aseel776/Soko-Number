@@ -116,25 +116,24 @@ class Structure {
           .isEmpty = true;
     }
     var s = Structure(width: width, height: height, board: b, playBoxes: pb);
+    s.parent = this.deepCopy();
     return s;
   }
 
   List<Structure> getNextStates() {
     List<Structure> states = [];
-    for (var pb in playBoxes!) {
-      var positions = checkMoves(pb);
-      for (var p in positions) {
-        var s = move(p);
-        var included = false;
-        for (var temp in states) {
-          if (s.equals(temp)) {
-            included = true;
-            break;
-          }
-        }
-        if(!included){
-          states.add(s);
-        }
+
+    var su = move(Positions.up);
+
+    var sd = move(Positions.down);
+    var sr = move(Positions.right);
+    var sl = move(Positions.left);
+
+    List<Structure> temp = [su, sd, sr, sl];
+
+    for (var x in temp) {
+      if (!x.equals(this) && !x.equals(parent!)) {
+        states.add(x);
       }
     }
     return states;
@@ -328,130 +327,45 @@ class Structure {
     }
   }
 
-  List<Box> deepCopy(List list) {
-    List<Box> c = [];
-    for (var element in list) {
-      c.add(element.copy());
+  Structure deepCopy() {
+    List<Box> b = [];
+    List<PlayBox> pb = [];
+
+    for(var temp in board!){
+      b.add(temp.copy());
     }
-    return c;
+
+    for(var temp in playBoxes!){
+      pb.add(temp.copy());
+    }
+
+    var s = Structure(width: width, height: height, board: b, playBoxes: pb);
+
+    return s;
   }
 
-// void move(Positions p) {
-//   for (var element in playBoxes!) {
-//     List<Positions> moves = checkMoves(element);
-//
-//     if (moves.contains(p)) {
-//       switch (p) {
-//         case Positions.right:
-//           board!
-//               .singleWhere(
-//                   (x) => x.row == element.row && x.column == element.column)
-//               .isEmpty = true;
-//           element.column = element.column! + 1;
-//           board!
-//               .singleWhere(
-//                   (x) => x.row == element.row && x.column == element.column)
-//               .isEmpty = false;
-//           break;
-//         case Positions.left:
-//           board!
-//               .singleWhere(
-//                   (x) => x.row == element.row && x.column == element.column)
-//               .isEmpty = true;
-//           element.column = element.column! - 1;
-//           board!
-//               .singleWhere(
-//                   (x) => x.row == element.row && x.column == element.column)
-//               .isEmpty = false;
-//           break;
-//         case Positions.up:
-//           board!
-//               .singleWhere(
-//                   (x) => x.row == element.row && x.column == element.column)
-//               .isEmpty = true;
-//           element.row = element.row! - 1;
-//           board!
-//               .singleWhere(
-//                   (x) => x.row == element.row && x.column == element.column)
-//               .isEmpty = false;
-//           break;
-//         case Positions.down:
-//           board!
-//               .singleWhere(
-//                   (x) => x.row == element.row && x.column == element.column)
-//               .isEmpty = true;
-//           element.row = element.row! + 1;
-//           board!
-//               .singleWhere(
-//                   (x) => x.row == element.row && x.column == element.column)
-//               .isEmpty = false;
-//           break;
-//         default:
-//           break;
+// List<Structure> getNextStates() {
+//   List<Structure> states = [];
+//   for (var pb in playBoxes!) {
+//     var positions = checkMoves(pb);
+//     for (var p in positions) {
+//       var s = move(p);
+//       if(s.equals(parent!)){
+//         continue;
 //       }
-//     }
-//   }
-// }
-
-// void printBoard() {
-//   board!.sort((a, b) => a.column!.compareTo(b.column!));
-//   board!.sort((a, b) => a.row!.compareTo(b.row!));
-//
-//   var b = board!;
-//   var p = playBoxes!;
-//
-//   String s = '\n';
-//
-//   for (int i = 0; i < height!; i++) {
-//     for (int j = 0; j < width!; j++) {
-//       if (p.first.row == b.first.row && p.first.column == b.first.column) {
-//         s += 'P${p.first.num}      ';
-//         p.remove(p.first);
-//         b.remove(b.first);
-//       } else {
-//         if (b.first is Block) {
-//           s += 'B      ';
-//         } else if (b.first is Empty) {
-//           s += 'E      ';
-//         } else if (b.first is Goal) {
-//           var temp = b.first as Goal;
-//           s += 'G${temp.num}      ';
+//       var included = false;
+//       for (var temp in states) {
+//         if (s.equals(temp)) {
+//           included = true;
+//           break;
 //         }
-//         b.remove(b.first);
+//       }
+//       if(!included){
+//         states.add(s);
 //       }
 //     }
-//     s += '\n';
 //   }
-//
-//   // for (int i = 1; i <= height!; i++) {
-//   //   for (int j = 1; j <= width!; j++) {
-//   //     for (var x in playBoxes!) {
-//   //       for (var y in board!) {
-//   //         if (x.row == bo.row && x.column == y.column) {
-//   //           s += 'P${x.num}   ';
-//   //           j++;
-//   //           continue;
-//   //         }
-//   //         else {
-//   //           if (y is Block) {
-//   //             s += 'B   ';
-//   //           } else if (y is Empty && s.isEmpty) {
-//   //             s += 'E   ';
-//   //           } else if (y is Goal) {
-//   //             s += 'G${y.num}   ';
-//   //           } else {
-//   //             s += 'ERROR   ';
-//   //           }
-//   //           j++;
-//   //         }
-//   //       }
-//   //       s += '\n';
-//   //     }
-//   //   }
-//   //   i++;
-//   // }
-//
-//   print(s);
+//   return states;
 // }
 
 }

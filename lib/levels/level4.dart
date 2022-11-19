@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:soko_number/logic.dart';
 import 'package:soko_number/main.dart';
 import 'package:soko_number/structure.dart';
@@ -30,19 +29,6 @@ class _Level4State extends State<Level4> {
       appBar: AppBar(
         backgroundColor: Colors.teal,
         elevation: 0,
-        actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                s = level4();
-              });
-            },
-            icon: const Icon(
-              Icons.refresh,
-              color: Colors.white,
-            ),
-          )
-        ],
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -164,16 +150,85 @@ class _Level4State extends State<Level4> {
         ),
       ),
       backgroundColor: Colors.teal,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          l.dfs(s);
-        },
-        backgroundColor: Colors.white,
-        child: Text('DFS',
-          style: TextStyle(
-              color: Colors.black
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              setState(() {
+                s = level4();
+              });
+            },
+            child: const Icon(
+              Icons.refresh,
+              color: Colors.teal,
+            ),
+            backgroundColor: Colors.white,
+            heroTag: 0,
           ),
-        ),
+          SizedBox(height: 10),
+          FloatingActionButton(
+            onPressed: () {
+              l.stack.clear();
+              l.dfs(s);
+            },
+            backgroundColor: Colors.white,
+            child: Text(
+              'DFS',
+              style: TextStyle(
+                color: Colors.teal,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            heroTag: 1,
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton(
+            onPressed: () {
+              l.queue.clear();
+              l.bfs(s);
+            },
+            backgroundColor: Colors.white,
+            child: Text(
+              'BFS',
+              style: TextStyle(
+                color: Colors.teal,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            heroTag: 2,
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton(
+            onPressed: () {
+              l.ucs(s);
+            },
+            backgroundColor: Colors.white,
+            child: Text(
+              'UCS',
+              style: TextStyle(
+                color: Colors.teal,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            heroTag: 3,
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton(
+            onPressed: () {
+              l.aStar(s);
+            },
+            backgroundColor: Colors.white,
+            child: Text(
+              'A*',
+              style: TextStyle(
+                color: Colors.teal,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            heroTag: 4,
+          ),
+        ],
       ),
     );
   }
