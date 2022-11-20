@@ -10,7 +10,12 @@ class Structure {
   int? width;
   List<Box>? board;
   List<PlayBox>? playBoxes;
+
   Structure? parent;
+  //used to exclude the previous state from getNextStates
+
+  List<int> road = [];
+  //used for bfs and usc to get the full path
 
   Structure(
       {required this.width,
@@ -81,6 +86,7 @@ class Structure {
     }
 
     var temp = <Box>[];
+    //used to change isEmpty attribute after moving playBoxes
 
     for (var element in pb) {
       List<Positions> moves = checkMoves(element);
@@ -116,7 +122,7 @@ class Structure {
           .isEmpty = true;
     }
     var s = Structure(width: width, height: height, board: b, playBoxes: pb);
-    s.parent = this.deepCopy();
+    s.parent = this;
     return s;
   }
 
@@ -124,7 +130,6 @@ class Structure {
     List<Structure> states = [];
 
     var su = move(Positions.up);
-
     var sd = move(Positions.down);
     var sr = move(Positions.right);
     var sl = move(Positions.left);
@@ -326,46 +331,5 @@ class Structure {
       return 'No Match';
     }
   }
-
-  Structure deepCopy() {
-    List<Box> b = [];
-    List<PlayBox> pb = [];
-
-    for(var temp in board!){
-      b.add(temp.copy());
-    }
-
-    for(var temp in playBoxes!){
-      pb.add(temp.copy());
-    }
-
-    var s = Structure(width: width, height: height, board: b, playBoxes: pb);
-
-    return s;
-  }
-
-// List<Structure> getNextStates() {
-//   List<Structure> states = [];
-//   for (var pb in playBoxes!) {
-//     var positions = checkMoves(pb);
-//     for (var p in positions) {
-//       var s = move(p);
-//       if(s.equals(parent!)){
-//         continue;
-//       }
-//       var included = false;
-//       for (var temp in states) {
-//         if (s.equals(temp)) {
-//           included = true;
-//           break;
-//         }
-//       }
-//       if(!included){
-//         states.add(s);
-//       }
-//     }
-//   }
-//   return states;
-// }
 
 }

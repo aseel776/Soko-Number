@@ -170,6 +170,7 @@ class _Level1State extends State<Level1> {
           FloatingActionButton(
             onPressed: () {
               l.stack.clear();
+              l.counter = 0;
               l.dfs(s);
             },
             backgroundColor: Colors.white,
@@ -185,7 +186,6 @@ class _Level1State extends State<Level1> {
           SizedBox(height: 10),
           FloatingActionButton(
             onPressed: () {
-              l.queue.clear();
               l.bfs(s);
             },
             backgroundColor: Colors.white,
